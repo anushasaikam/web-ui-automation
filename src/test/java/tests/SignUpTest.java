@@ -1,40 +1,22 @@
 package tests;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import pages.SignUpPage; 
+import base.BaseClass;
 
-public class SignUpTest {
-    
-    WebDriver driver;
-    SignUpPage signUpPage;
-
+public class SignUpTest extends BaseClass {
     String url = "https://www.automationexercise.com/";
-    String username = "User20252";
-    String email = "User20252@gmail.com";
+    String username = "User202519";
+    String email = "User202519@gmail.com";
 
-    @BeforeMethod
-    public void setUp() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        signUpPage = new SignUpPage(driver); 
-    }
-
-    @AfterMethod
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
+    public static Logger logger = LogManager.getLogger(SignUpTest.class);
 
     public void handleConsent() {
         try {
@@ -48,8 +30,8 @@ public class SignUpTest {
     }
 
     public void completeSignUpFlow(String password, String day, String month, String year,
-                                       String firstName, String lastName, String company, String address1, String address2,
-                                       String country, String state, String city, String zipCode, String mobileNumber) {
+                                   String firstName, String lastName, String company, String address1, String address2,
+                                   String country, String state, String city, String zipCode, String mobileNumber) {
         driver.get(url);
         handleConsent();
 
@@ -60,7 +42,6 @@ public class SignUpTest {
         Assert.assertEquals(driver.getCurrentUrl(),   "https://www.automationexercise.com/signup",
             "Did not navigate to the signup page!");
         
-        //signUpPage.waitForAccountInfo();
         signUpPage.fillAccountInformation(
             password, day, month, year,
             firstName, lastName, company, address1, address2,
@@ -82,15 +63,16 @@ public class SignUpTest {
 
     @Test(dataProvider = "signUpData")
     public void testCompleteSignUpFlow(String password, String day, String month, String year,
-                                              String firstName, String lastName, String company, String address1, String address2,
-                                              String country, String state, String city, String zipCode, String mobileNumber) {
+                                       String firstName, String lastName, String company, String address1, String address2,
+                                       String country, String state, String city, String zipCode, String mobileNumber) {
+            logger.info("This is an INFO log — test execution has started.");
+
         completeSignUpFlow(password, day, month, year,
-                                   firstName, lastName, company, address1, address2,
-                                   country, state, city, zipCode, mobileNumber);
-     
-    
-       
+                           firstName, lastName, company, address1, address2,
+                           country, state, city, zipCode, mobileNumber);
     }
 }
+
+
 
 
