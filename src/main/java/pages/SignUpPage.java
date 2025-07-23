@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -60,19 +61,17 @@ public class SignUpPage {
 
     public void clicksignupNameEmailButton() {
         wait.until(ExpectedConditions.elementToBeClickable(signupNameEmailButton)).click();
-        waitForSignUpUrl();
+        // Wait for either the expected URL or a unique element on the next page
+        wait.until(ExpectedConditions.or(
+            ExpectedConditions.urlToBe("https://www.automationexercise.com/signup"),
+            ExpectedConditions.visibilityOfElementLocated(accountInfoHeader)
+        ));
     }
 
     public void waitForSignUpUrl() {
         wait.until(ExpectedConditions.urlToBe("https://www.automationexercise.com/signup"));
     }
 
-
-   /* public void waitForAccountInfo() {
-        WebElement header = wait.until(ExpectedConditions.visibilityOfElementLocated(accountInfoHeader));
-        ((JavascriptExecutor) driver)
-            .executeScript("arguments[0].scrollIntoView(true);", header);
-    }*/
 
 
     /** Fill out all Account Information & Create Account */
@@ -104,8 +103,16 @@ public class SignUpPage {
         driver.findElement(zipCodeField).sendKeys(zipCode);
         driver.findElement(mobileNumberField).sendKeys(mobileNumber);
 
-        driver.findElement(createAccountButton).click();
+        clickCreateAccountButton();
     }
+
+    public void clickCreateAccountButton() {
+        WebElement button = wait.until(ExpectedConditions.visibilityOfElementLocated(createAccountButton));
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        jsExecutor.executeScript("arguments[0].scrollIntoView(true);", button);
+        wait.until(ExpectedConditions.elementToBeClickable(createAccountButton)).click();
+    }
+}
 
 
 
@@ -261,5 +268,4 @@ public class SignUpPage {
         clickCreateAccountButton();
     }
 
-*/
-}
+}*/
