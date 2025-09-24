@@ -10,5 +10,3 @@ Java
 
 TestNG
 
-
-## 📁 Project Structure
